@@ -10,25 +10,7 @@ resource "azurerm_key_vault" "this" {
   soft_delete_retention_days = var.kv_soft_delete_retention_days
   purge_protection_enabled   = var.kv_purge_protection_enabled
 
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    key_permissions = [
-      "Get",
-    ]
-
-    secret_permissions = [
-      "Get",
-      "Set",
-      "Delete",
-      "List"
-    ]
-
-    storage_permissions = [
-      "Get",
-    ]
-  }
+  enable_rbac_authorization  = true
 
   tags = var.kv_tags
 }
