@@ -26,6 +26,7 @@ jobs:
           client-id: e0d4c085-a3ad-4694-bfd7-f4486656cdab
           tenant-id: 06209c3c-8ca6-4b1e-96a1-f2458effd850
           subscription-id: 25a1ac98-4092-4447-9085-2aeaec93d823
+          audience: api://AzureADTokenExchange
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
