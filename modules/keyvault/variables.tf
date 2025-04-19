@@ -35,6 +35,16 @@ variable "kv_purge_protection_enabled" {
   default     = false
 }
 
+variable "access_policies" {
+  type = list(object({
+    tenant_id           = string
+    object_id           = string
+    key_permissions     = list(string)
+    secret_permissions  = list(string)
+    storage_permissions = list(string)
+  }))
+}
+
 variable "kv_tags" {
   description = "A map of tags to assign to the Key Vault"
   type        = map(string)

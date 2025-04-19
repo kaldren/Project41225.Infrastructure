@@ -11,25 +11,13 @@ resource "azurerm_key_vault" "this" {
   purge_protection_enabled   = var.kv_purge_protection_enabled
 
   access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
+    for_each = { for policy in var.access_policies : "${policy.object_id}" => policy }
 
-    key_permissions = [
-      "Get",
-      "List",
-      "Create",
-      "Import",
-      "Update",
-      "Delete"
-    ]
-
-    secret_permissions = [
-      "Get",
-    ]
-
-    storage_permissions = [
-      "Get",
-    ]
+    tenant_id = each.value.tenant_id
+    object_id = each.value.object_id
+    key_permissions = each.value.key_permissions
+    secret_permissions = each.value.secret_permissions
+    storage_permissions = each.value.storage_permissions
   }
 
   tags = var.kv_tags
