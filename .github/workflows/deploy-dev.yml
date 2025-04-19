@@ -27,16 +27,10 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Clean .terraform cache (optional but safe)
-        run: rm -rf .terraform
-        working-directory: ./envs/dev
-
       - name: Terraform Init (with correct OIDC identity)
         working-directory: ./envs/dev
         run: |
-          echo "=== ARM ENVIRONMENT ==="
-          printenv | grep ARM_
-          terraform init -reconfigure
+          terraform init
         env:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
