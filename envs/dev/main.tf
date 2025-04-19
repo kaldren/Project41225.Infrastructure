@@ -42,23 +42,6 @@ module "keyvault" {
   kv_soft_delete_retention_days = var.kv_soft_delete_retention_days
   kv_purge_protection_enabled   = var.kv_purge_protection_enabled
 
-  access_policies = [
-    {
-      tenant_id           = data.azurerm_client_config.current.tenant_id
-      object_id           = data.azurerm_client_config.current.object_id
-      key_permissions     = ["get", "list"]
-      secret_permissions  = ["get", "list", "set"]
-      storage_permissions = []
-    },
-    {
-      tenant_id           = data.azurerm_client_config.current.tenant_id
-      object_id           = data.azurerm_client_config.current.object_id
-      key_permissions     = []
-      secret_permissions  = ["get"]
-      storage_permissions = ["get"]
-    }
-  ]
-
   kv_tags                     = {
     environment = var.environment
     project     = var.project_name
