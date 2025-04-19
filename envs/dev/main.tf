@@ -1,3 +1,13 @@
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "rg-use-project41225-tf-dev"
+    storage_account_name = "stouseproject41225tfdev"
+    container_name       = "tfstate"
+    key                  = "dev.terraform.tfstate"
+  }
+}
+
+
 module "resource_group" {
   source   = "../../modules/resource-group"
   rg_name     = var.resource_group_name
