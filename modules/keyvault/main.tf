@@ -16,6 +16,11 @@ resource "azurerm_key_vault" "this" {
 
     key_permissions = [
       "Get",
+      "List",
+      "Create",
+      "Import",
+      "Update",
+      "Delete"
     ]
 
     secret_permissions = [
