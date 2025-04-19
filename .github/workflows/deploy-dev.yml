@@ -1,8 +1,5 @@
-# Deploy terraform code to dev environment on Azure
-# This workflow is triggered on push to the main branch
-# It runs the terraform code to deploy the infrastructure to the dev environment
-
 name: Deploy to Dev
+
 on:
   push:
     branches:
@@ -20,17 +17,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Azure Login with OIDC
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          audience: api://AzureADTokenExchange
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Export ARM_* env vars for Terraform
-        run: |
-          export ARM_CLIENT_ID="${{ secrets.AZURE_CLIENT_ID }}"
-          export ARM_TENANT_ID="${{ secrets.AZURE_TENANT_ID }}"
-          export ARM_SUBSCRIPTION_ID="${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-          export ARM_USE_OIDC=true
-          terraform init
+      - name: Terraform Init
+        run: terraform init
         working-directory: ./envs/dev
+        env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          ARM_USE_OIDC: true
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
