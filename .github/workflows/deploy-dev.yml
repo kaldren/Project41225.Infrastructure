@@ -1,0 +1,32 @@
+# Deploy terraform code to dev environment on Azure
+# This workflow is triggered on push to the main branch
+# It runs the terraform code to deploy the infrastructure to the dev environment
+
+name: Deploy to Dev
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+
+      - name: Notify deployment success
+        run: echo "Deployment to dev environment successful!"
